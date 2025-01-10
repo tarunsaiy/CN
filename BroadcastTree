@@ -1,0 +1,81 @@
+            #include 
+                #include 
+                #define INF 9999
+                #define MX 10
+                
+                void dijk(int g[MX][MX], int n, int start);
+                
+                int main() {
+                    int g[MX][MX], i, j, n, u;
+                
+                    printf("Enter no. of vertices: ");
+                    scanf("%d", &n);
+                
+                    printf("\nEnter the adjacency matrix:\n");
+                    for (i = 0; i < n; i++) {
+                        for (j = 0; j < n; j++) {
+                            scanf("%d", &g[i][j]);
+                        }
+                    }
+                
+                    printf("\nEnter the starting node: ");
+                    scanf("%d", &u);
+                
+                    dijk(g, n, u);
+                
+                    return 0;
+                }
+                
+                void dijk(int g[MX][MX], int n, int start) {
+                    int c[MX][MX], d[MX], p[MX], v[MX], cnt, md, nxt, i, j;
+                
+                    for (i = 0; i < n; i++) {
+                        for (j = 0; j < n; j++) {
+                            c[i][j] = (g[i][j] == 0) ? INF : g[i][j];
+                        }
+                    }
+                
+                    for (i = 0; i < n; i++) {
+                        d[i] = c[start][i];
+                        p[i] = start;
+                        v[i] = 0;
+                    }
+                
+                    d[start] = 0;
+                    v[start] = 1;
+                    cnt = 1;
+                
+                    while (cnt < n - 1) {
+                        md = INF;
+                        for (i = 0; i < n; i++) {
+                            if (d[i] < md && !v[i]) {
+                                md = d[i];
+                                nxt = i;
+                            }
+                        }
+                
+                        v[nxt] = 1;
+                
+                        for (i = 0; i < n; i++) {
+                            if (!v[i] && md + c[nxt][i] < d[i]) {
+                                d[i] = md + c[nxt][i];
+                                p[i] = nxt;
+                            }
+                        }
+                        cnt++;
+                    }
+                
+                    for (i = 0; i < n; i++) {
+                        if (i != start) {
+                            printf("\nDistance of node %d = %d", i, d[i]);
+                            printf("\nPath = %d", i);
+                            j = i;
+                            do {
+                                j = p[j];
+                                printf(" <- %d", j);
+                            } while (j != start);
+                        }
+                    }
+                }
+                
+        
